@@ -23,3 +23,13 @@ jobs:
         export SERVICE_BINDING_ROOT=`pwd`/bindings
         go test -v -coverpkg=./... -coverprofile=profile.cov ./...
         go tool cover -func profile.cov
+  publish-image:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log in to registry
+      run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+    - name: Build and Publish Docker Image
+      run: |
+        make docker-image
+        make docker-image-push
