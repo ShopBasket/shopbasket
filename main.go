@@ -99,6 +99,13 @@ func IOReadDir(root string) ([]string, error) {
 	}
 	return files, nil
 }
+
+func StatusHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"build": "1"}`))
+}
+
 func main() {
 	var err error
 	db, err = InitializeDB()
@@ -141,6 +148,7 @@ func InitializeDB() (*sql.DB, error) {
 func Route() (n *negroni.Negroni, rt *mux.Router) {
 	router := mux.NewRouter()
 
+	router.HandleFunc("/status", StatusHandler).Methods("GET")
 	router.HandleFunc("/api/inventory/{id}", HandleGetInventory).Methods("GET")
 	router.HandleFunc("/api/inventory", HandleCreateInventory).Methods("POST")
 	router.HandleFunc("/api/inventory", HandleListInventory).Methods("GET")
