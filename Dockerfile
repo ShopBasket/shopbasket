@@ -8,6 +8,8 @@ WORKDIR /workspace
 RUN echo 2
 
 COPY / /workspace/
+RUN npm install -g @angular/cli
+RUN cd web && npm install && ng build && cd ..
 RUN make build
 
 FROM debian:11
