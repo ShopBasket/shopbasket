@@ -31,4 +31,4 @@ jobs:
       run: |
         make docker-image
         echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-        make docker-image-push
+        docker push ghcr.io/shopbasket/shopbasket:latest
