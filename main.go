@@ -128,8 +128,7 @@ func InitializeDB() (*sql.DB, error) {
 	b = bindings.Filter(b, "postgresql")
 	if len(b) != 1 {
 		_, _ = fmt.Fprintf(os.Stderr, "Incorrect number of PostgreSQL drivers: %d\n", len(b))
-		return nil, nil
-		//os.Exit(1)
+		os.Exit(1)
 	}
 	connectionString, ok := bindings.Get(b[0], "pgbouncer-uri")
 	if !ok {
