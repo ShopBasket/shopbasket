@@ -105,14 +105,17 @@ func main() {
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 	}
-	defer db.Close()
-	var greeting string
-	err = db.QueryRow("select 1").Scan(&greeting)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
-	}
+	if db != nil {
+		defer db.Close()
+		var greeting string
 
-	fmt.Println(greeting)
+		err = db.QueryRow("select 1").Scan(&greeting)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "QueryRow failed: %v\n", err)
+		}
+
+		fmt.Println(greeting)
+	}
 
 	n, router := Route()
 	n.UseHandler(router)
@@ -125,6 +128,7 @@ func InitializeDB() (*sql.DB, error) {
 	b = bindings.Filter(b, "postgresql")
 	if len(b) != 1 {
 		_, _ = fmt.Fprintf(os.Stderr, "Incorrect number of PostgreSQL drivers: %d\n", len(b))
+		return nil, nil
 		//os.Exit(1)
 	}
 	connectionString, ok := bindings.Get(b[0], "pgbouncer-uri")
