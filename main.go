@@ -103,7 +103,7 @@ func IOReadDir(root string) ([]string, error) {
 func StatusHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"build": "1"}`))
+	w.Write([]byte(`{"build": "2}`))
 }
 
 func main() {
